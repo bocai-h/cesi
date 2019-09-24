@@ -11,6 +11,7 @@ import {
   NodesPage,
   EnvironmentsPage,
   UsersPage,
+  ServersPage,
   AboutPage,
   ChangePasswordPage
 } from "scenes/index";
@@ -180,6 +181,17 @@ class App extends Component {
                       users={this.state.users}
                       refreshUsers={this.handleRefreshUsers}
                       removeUser={this.handleRemoveUser}
+                    />
+                  )}
+                />
+                 <Route
+                  path="/servers"
+                  exact
+                  render={props => (
+                    <ServersPage
+                      {...props}
+                      nodes={this.state.nodes}
+                      refreshNodes={this.handleRefreshNodes}
                     />
                   )}
                 />

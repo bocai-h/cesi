@@ -20,7 +20,8 @@
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.1.1",
-    "reactstrap": "^8.0.1"
+    "reactstrap": "^8.0.1",
+    "yarn": "^1.17.3"
   },
   "scripts": {
     "start": "NODE_PATH=src react-scripts start",
@@ -28,7 +29,7 @@
     "test": "NODE_PATH=src react-scripts test --env=jsdom",
     "eject": "NODE_PATH=src react-scripts eject"
   },
-  "proxy": "http://cesi-backend:5000",
+  "proxy": "http://127.0.0.1:5000",
   "devDependencies": {},
   "browserslist": [
     ">0.2%",

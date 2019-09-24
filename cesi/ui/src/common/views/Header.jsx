@@ -96,6 +96,11 @@ const Header = ({ onLogOut, isAdmin, version }) => {
             </NavLink>
           </NavItem>
         )}
+        <NavItem>
+          <NavLink exact replace to="/servers" tag={RRNavLink}>
+            Servers
+          </NavLink>
+        </NavItem>
       </Nav>
       <HeaderSettings onLogOut={onLogOut} />
     </Navbar>
