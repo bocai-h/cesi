@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 
-import Processes from "common/helpers/Processes";
+import ProcessesWithBussinesses from "common/helpers/ProcessesWithBussinesses";
+import Bussinesses from "common/helpers/Bussinesses";
 import FilterOfNodes from "scenes/nodes/components/FilterOfNodes";
 
 class NodesPage extends Component {
   state = {
-    checks: []
+    checks: [],
+    bussinessesChecks: []
   };
 
   handleInputChange = event => {
@@ -24,12 +26,27 @@ class NodesPage extends Component {
     }
   };
 
+  handleBusinessesInputChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    if (value) {
+      this.setState(prevState => ({
+        bussinessesChecks: prevState.bussinessesChecks.concat([name])
+      }));
+    } else {
+      this.setState(prevState => ({
+        bussinessesChecks: prevState.bussinessesChecks.filter(element => element !== name)
+      }));
+    }
+  };
+
   componentDidMount() {
     this.props.refreshNodes();
   }
 
   render() {
-    const { checks } = this.state;
+    const { checks, bussinessesChecks } = this.state;
     const { nodes, refreshNodes } = this.props;
 
     return (
@@ -42,13 +59,26 @@ class NodesPage extends Component {
               onInputChange={this.handleInputChange}
             />
           </Col>
+          <Col sm={{ size: "auto" }}>
+            {nodes
+              .filter(node => checks.indexOf(node.general.name) >= 0)
+              .map(node => (
+                <Bussinesses
+                  key={node.general.name}
+                  node={node}
+                  checks={bussinessesChecks}
+                  onInputChange={this.handleBusinessesInputChange}
+                />
+              ))}
+          </Col>
           <Col>
             {nodes
               .filter(node => checks.indexOf(node.general.name) >= 0)
               .map(node => (
-                <Processes
+                <ProcessesWithBussinesses
                   key={node.general.name}
                   node={node}
+                  bussinesses={bussinessesChecks}
                   refresh={refreshNodes}
                 />
               ))}

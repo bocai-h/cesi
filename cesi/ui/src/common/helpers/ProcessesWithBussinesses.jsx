@@ -106,7 +106,7 @@ const Process = ({ node, process, refresh }) => {
   );
 };
 
-class Processes extends React.Component {
+class ProcessesWithBussinesses extends React.Component {
   static propTypes = {
     node: PropTypes.object.isRequired,
     filterFunc: PropTypes.func
@@ -125,12 +125,19 @@ class Processes extends React.Component {
 
   render() {
     const { node, bussinesses, filterFunc } = this.props;
+    const showProcesses = node.processes.filter(process => {
+        var pnameArray = process.name.split(".")
+        var pbussiness = pnameArray[1]
+        if(bussinesses.indexOf(pbussiness) > -1) {
+            return process
+        }
+    })
     return (
       <React.Fragment>
         <Card body>
           <CardTitle>
-            Processes for {node.general.name}{" "}
-            <Badge color="secondary">{node.processes.length}</Badge>{" "}
+            Processes for {node.general.name}{" "}{ bussinesses.join(" | ") } {" "}
+            <Badge color="secondary">{showProcesses.length}</Badge>{" "}
             <Button
               color="success"
               onClick={() => this.handleAllProcess("start")}
@@ -150,7 +157,7 @@ class Processes extends React.Component {
               Restart All
             </Button>{" "}
           </CardTitle>
-          {node.processes.length !== 0 ? (
+          {showProcesses.length !== 0 ? (
             <Table hover>
               <thead>
                 <tr>
@@ -163,7 +170,7 @@ class Processes extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {node.processes.filter(filterFunc).map(process => (
+                {showProcesses.filter(filterFunc).map(process => (
                   <Process
                     key={`${node.name}:${process.name}`}
                     node={node}
@@ -183,4 +190,4 @@ class Processes extends React.Component {
   }
 }
 
-export default Processes;
+export default ProcessesWithBussinesses;

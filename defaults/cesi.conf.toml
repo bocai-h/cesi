@@ -30,7 +30,7 @@ username = "supervisor"
 password = "123"
 host = "192.168.56.100"
 port = "9001"
-bussinesses = [ "crm", "oa", "ERP" ]
+bussinesses = [ "crm", "oa" ]
 
 # [[nodes]]
 # name = "analysis-server"

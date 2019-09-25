@@ -104,6 +104,7 @@ class Node:
             # "username": self.username,
             # "password": self.password,
             "connected": self.is_connected,
+            "bussinesses": self.bussinesses,
         }
 
     def serialize_processes(self):
