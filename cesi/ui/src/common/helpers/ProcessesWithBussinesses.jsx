@@ -115,12 +115,24 @@ class ProcessesWithBussinesses extends React.Component {
     filterFunc: () => true
   };
 
-  handleAllProcess = action => {
-    const nodeName = this.props.node.general.name;
-    api.nodes.allProcesses[action](nodeName).then(() => {
-      console.log("Updating nodes for single node action.");
-      this.props.refresh();
+  handleProcess = (action, node, process) => {
+    const nodeName = node.general.name;
+    const processUniqueName = `${process.group}:${process.name}`;
+    api.processes.process[action](nodeName, processUniqueName).then(data => {
+      console.log(data);
     });
+  };
+
+  handleAllProcess = (action, node, processes)=> {
+    if (processes.length == 0) {
+        console.log("processes's length is 0, nothing to do");
+        return
+    }
+    this.handleProcess(action, node, processes[0]);
+    // processes.map(process=>{
+    //     this.handleProcess(action, node, process);
+    // })
+    this.props.refresh();
   };
 
   render() {
@@ -140,19 +152,19 @@ class ProcessesWithBussinesses extends React.Component {
             <Badge color="secondary">{showProcesses.length}</Badge>{" "}
             <Button
               color="success"
-              onClick={() => this.handleAllProcess("start")}
+              onClick={() => this.handleAllProcess("start", node, showProcesses)}
             >
               Start All
             </Button>{" "}
             <Button
               color="danger"
-              onClick={() => this.handleAllProcess("stop")}
+              onClick={() => this.handleAllProcess("stop", node, showProcesses)}
             >
               Stop All
             </Button>{" "}
             <Button
               color="warning"
-              onClick={() => this.handleAllProcess("restart")}
+              onClick={() => this.handleAllProcess("restart", node, showProcesses)}
             >
               Restart All
             </Button>{" "}

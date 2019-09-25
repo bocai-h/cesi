@@ -90,6 +90,7 @@ def stop_process(node_name, unique_process_name):
         return jsonify(status="error", message="Node is not connected"), 400
 
     status, msg = node.stop_process(unique_process_name)
+
     if status:
         activity.logger.info(
             "{} stopped {} node's {} process.".format(
