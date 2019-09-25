@@ -103,6 +103,19 @@ const nodes = {
         `${API_PREFIX}/nodes/${nodeName}/all-processes/restart/`
       );
     }
+  },
+  batchProcesses: {
+    start: (nodeName, processeNames)  => {
+      return postRequest(`${API_PREFIX}/nodes/${nodeName}/batch-processes/start/`, {"processeNames": processeNames});
+    },
+    stop: (nodeName, processeNames) => {
+      return postRequest(`${API_PREFIX}/nodes/${nodeName}/batch-processes/stop/`, {"processeNames": processeNames});
+    },
+    restart: (nodeName, processeNames) => {
+      return postRequest(
+        `${API_PREFIX}/nodes/${nodeName}/batch-processes/restart/`, {"processeNames": processeNames}
+      );
+    }
   }
 };
 

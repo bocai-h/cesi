@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, g
+from flask import Blueprint, jsonify, request, g
 
 from core import Cesi
 from decorators import is_user_logged_in, is_admin_or_normal_user, is_admin
@@ -204,6 +204,45 @@ def start_all_process(node_name):
     return jsonify(status="success", message="ok")
 
 
+@nodes.route("/<node_name>/batch-processes/start/", methods=["POST"])
+@is_user_logged_in("Illegal request for start to {node_name} node's batch processes.")
+@is_admin_or_normal_user(
+    "Unauthorized user request for start.Start event fail for {node_name} node's batch processes."
+)
+def start_batch_process(node_name):
+    data = request.get_json()
+    node = cesi.get_node_or_400(node_name)
+    if not node.is_connected:
+        return jsonify(status="error", message="Node is not connected"), 400
+
+    processNames = data["processeNames"]
+    processNamesMap = {}
+    for name in processNames:  
+        processNamesMap[name] = True
+
+    
+    for process in node.processes:
+        if not (process.name in processNamesMap.keys()):
+            continue
+
+        if not process.state == 20:
+            status, msg = node.start_process(process.group + ":" + process.name)
+            if status:
+                activity.logger.info(
+                    "{} started {} node's {} process.".format(
+                        g.user.username, node_name, process.name
+                    )
+                )
+            else:
+                activity.logger.info(
+                    "{} unsuccessful start event {} node's {} process.".format(
+                        g.user.username, node_name, process.name
+                    )
+                )
+
+    return jsonify(status="success", message="ok")
+
+
 @nodes.route("/<node_name>/all-processes/stop/")
 @is_user_logged_in("Illegal request for stop to {node_name} node's all processes.")
 @is_admin_or_normal_user(
@@ -233,6 +272,43 @@ def stop_all_process(node_name):
     return jsonify(status="success", message="ok")
 
 
+@nodes.route("/<node_name>/batch-processes/stop/", methods=["POST"])
+@is_user_logged_in("Illegal request for stop to {node_name} node's batch processes.")
+@is_admin_or_normal_user(
+    "Unauthorized user request for stop.Stop event fail for {node_name} node's batch processes."
+)
+def stop_batch_process(node_name):
+    data = request.get_json()
+    node = cesi.get_node_or_400(node_name)
+    if not node.is_connected:
+        return jsonify(status="error", message="Node is not connected"), 400
+
+    processNames = data["processeNames"]
+    processNamesMap = {}
+    for name in processNames:  
+        processNamesMap[name] = True
+
+    for process in node.processes:
+        if not (process.name in processNamesMap.keys()):
+            continue
+        if not process.state == 0:
+            status, msg = node.stop_process(process.group + ":" + process.name)
+            if status:
+                activity.logger.info(
+                    "{} stopped {} node's {} process.".format(
+                        g.user.username, node_name, process.name
+                    )
+                )
+            else:
+                activity.logger.info(
+                    "{} unsuccessful stop event {} node's {} process.".format(
+                        g.user.username, node_name, process.name
+                    )
+                )
+
+    return jsonify(status="success", message="ok")
+
+
 @nodes.route("/<node_name>/all-processes/restart/")
 @is_user_logged_in("Illegal request for restart to {node_name} node's all processes.")
 @is_admin_or_normal_user(
@@ -244,6 +320,51 @@ def restart_all_process(node_name):
         return jsonify(status="error", message="Node is not connected"), 400
 
     for process in node.processes:
+        if not process.state == 0:
+            status, msg = node.stop_process(process.group + ":" + process.name)
+            if status:
+                print("Process stopped!")
+            else:
+                print(msg)
+
+        status, msg = node.start_process(process.group + ":" + process.name)
+        if status:
+            activity.logger.info(
+                "{} restarted {} node's {} process.".format(
+                    g.user.username, node_name, process.name
+                )
+            )
+        else:
+            activity.logger.info(
+                "{} unsuccessful restart event {} node's {} process.".format(
+                    g.user.username, node_name, process.name
+                )
+            )
+
+    return jsonify(status="success", message="ok")
+
+
+@nodes.route("/<node_name>/batch-processes/restart/",  methods=["POST"])
+@is_user_logged_in("Illegal request for restart to {node_name} node's batch processes.")
+@is_admin_or_normal_user(
+    "Unauthorized user request for restart.Restart event fail for {node_name} node's batch processes."
+)
+def restart_batch_process(node_name):
+    data = request.get_json()
+    node = cesi.get_node_or_400(node_name)
+    if not node.is_connected:
+        return jsonify(status="error", message="Node is not connected"), 400
+
+    processNames = data["processeNames"]
+    processNamesMap = {}
+
+    for name in processNames:  
+        processNamesMap[name] = True
+
+    for process in node.processes:
+        if not (process.name in processNamesMap.keys()):
+            continue
+
         if not process.state == 0:
             status, msg = node.stop_process(process.group + ":" + process.name)
             if status:

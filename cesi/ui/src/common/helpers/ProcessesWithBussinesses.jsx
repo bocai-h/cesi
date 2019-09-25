@@ -115,24 +115,15 @@ class ProcessesWithBussinesses extends React.Component {
     filterFunc: () => true
   };
 
-  handleProcess = (action, node, process) => {
-    const nodeName = node.general.name;
-    const processUniqueName = `${process.group}:${process.name}`;
-    api.processes.process[action](nodeName, processUniqueName).then(data => {
-      console.log(data);
-    });
-  };
 
-  handleAllProcess = (action, node, processes)=> {
-    if (processes.length == 0) {
-        console.log("processes's length is 0, nothing to do");
-        return
-    }
-    this.handleProcess(action, node, processes[0]);
-    // processes.map(process=>{
-    //     this.handleProcess(action, node, process);
-    // })
-    this.props.refresh();
+  handleAllProcess = (action, processes) => {
+    const nodeName = this.props.node.general.name;
+    const processNames = processes.map(process=>(process.name))
+    console.log(processNames)
+    api.nodes.batchProcesses[action](nodeName, processNames).then(() => {
+      console.log("Updating nodes for single node action.");
+      this.props.refresh();
+    });
   };
 
   render() {
@@ -152,19 +143,19 @@ class ProcessesWithBussinesses extends React.Component {
             <Badge color="secondary">{showProcesses.length}</Badge>{" "}
             <Button
               color="success"
-              onClick={() => this.handleAllProcess("start", node, showProcesses)}
+              onClick={() => this.handleAllProcess("start", showProcesses)}
             >
               Start All
             </Button>{" "}
             <Button
               color="danger"
-              onClick={() => this.handleAllProcess("stop", node, showProcesses)}
+              onClick={() => this.handleAllProcess("stop", showProcesses)}
             >
               Stop All
             </Button>{" "}
             <Button
               color="warning"
-              onClick={() => this.handleAllProcess("restart", node, showProcesses)}
+              onClick={() => this.handleAllProcess("restart", showProcesses)}
             >
               Restart All
             </Button>{" "}
