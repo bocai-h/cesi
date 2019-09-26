@@ -12,6 +12,7 @@ import {
   EnvironmentsPage,
   UsersPage,
   ServersPage,
+  BusinessesPage,
   AboutPage,
   ChangePasswordPage
 } from "scenes/index";
@@ -199,7 +200,7 @@ class App extends Component {
                   path="/businesses"
                   exact
                   render={props => (
-                    <ServersPage
+                    <BusinessesPage
                       {...props}
                       nodes={this.state.nodes}
                       refreshNodes={this.handleRefreshNodes}

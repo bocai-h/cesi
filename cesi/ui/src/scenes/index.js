@@ -6,6 +6,7 @@ export { default as NodesPage } from "scenes/nodes/NodesPage";
 export { default as GroupsPage } from "scenes/groups/GroupsPage";
 export { default as UsersPage } from "scenes/users/UsersPage";
 export { default as ServersPage } from "scenes/servers/ServersPage";
+export { default as BusinessesPage } from "scenes/businesses/BusinessesPage";
 export { default as ErrorPage } from "scenes/error/ErrorPage";
 export { default as LoginPage } from "scenes/login/LoginPage";
 export { default as AboutPage } from "scenes/about/AboutPage";
