@@ -20,9 +20,10 @@ class BusinessNodes extends Component {
     const showNodes = this.getShowNodes(nodes, business)
     return (
       <React.Fragment>
-        <Card body>
-          {showNodes.map(node=>(
-            <CardTitle key={node.general.name}>
+        { showNodes.length >0 ? (
+          <Card body>
+           {showNodes.map(node=>(
+              <CardTitle key={node.general.name}>
               <CustomInput
               type="checkbox"
               name={node.general.name}
@@ -35,6 +36,7 @@ class BusinessNodes extends Component {
             </CardTitle>
           ))} 
         </Card>
+        ) : ( <div></div>)}
       </React.Fragment>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 
-import ProcessesWithBusinesses from "common/helpers/ProcessesWithBusinesses";
+import ProcessesWithBusinessAndServers from "common/helpers/ProcessesWithBusinessAndServers";
 import AllBusinesses from "common/helpers/AllBusinesses";
 import BusinessNodes from "scenes/nodes/components/BusinessNodes";
 
@@ -64,6 +64,14 @@ class NodesPage extends Component {
                checks={serversChecks}
                onInputChange={this.handleServersInputChange}
             />
+          </Col>
+          <Col>
+            <ProcessesWithBusinessAndServers
+                nodes={nodes}
+                bussinessCheck={bussinessesCheck}
+                nodesChecks={serversChecks}
+                refresh={refreshNodes}
+            />   
           </Col>
 
           {/* <Col sm={{ size: "auto" }}>
