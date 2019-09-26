@@ -5,7 +5,7 @@ import { Card, CardTitle, Badge, CustomInput } from "reactstrap";
 class Bussinesses extends Component {
   render() {
     const { node, checks, onInputChange } = this.props;
-    const bussinesses = node.general.bussinesses
+    const bussinesses = node.processes.map(process=>(process.group))
     return (
       <React.Fragment>
         <Card body>

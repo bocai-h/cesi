@@ -7,7 +7,7 @@ import FilterOfNodes from "scenes/nodes/components/FilterOfNodes";
 
 class NodesPage extends Component {
   state = {
-    checks: [],
+    check: [],
     bussinessesChecks: []
   };
 
@@ -17,11 +17,7 @@ class NodesPage extends Component {
     const name = target.name;
     if (value) {
       this.setState(prevState => ({
-        checks: prevState.checks.concat([name])
-      }));
-    } else {
-      this.setState(prevState => ({
-        checks: prevState.checks.filter(element => element !== name)
+        check: name
       }));
     }
   };
@@ -46,7 +42,7 @@ class NodesPage extends Component {
   }
 
   render() {
-    const { checks, bussinessesChecks } = this.state;
+    const { check, bussinessesChecks } = this.state;
     const { nodes, refreshNodes } = this.props;
 
     return (
@@ -55,13 +51,13 @@ class NodesPage extends Component {
           <Col sm={{ size: "auto" }}>
             <FilterOfNodes
               nodes={this.props.nodes}
-              checks={checks}
+              checks={[check]}
               onInputChange={this.handleInputChange}
             />
           </Col>
           <Col sm={{ size: "auto" }}>
             {nodes
-              .filter(node => checks.indexOf(node.general.name) >= 0)
+              .filter(node => [check].indexOf(node.general.name) >= 0)
               .map(node => (
                 <Bussinesses
                   key={node.general.name}
@@ -73,7 +69,7 @@ class NodesPage extends Component {
           </Col>
           <Col>
             {nodes
-              .filter(node => checks.indexOf(node.general.name) >= 0)
+              .filter(node => [check].indexOf(node.general.name) >= 0)
               .map(node => (
                 <ProcessesWithBussinesses
                   key={node.general.name}

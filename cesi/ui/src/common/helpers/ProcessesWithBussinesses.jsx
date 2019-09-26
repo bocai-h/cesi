@@ -129,9 +129,7 @@ class ProcessesWithBussinesses extends React.Component {
   render() {
     const { node, bussinesses, filterFunc } = this.props;
     const showProcesses = node.processes.filter(process => {
-        var pnameArray = process.name.split(".")
-        var pbussiness = pnameArray[1]
-        if(bussinesses.indexOf(pbussiness) > -1) {
+        if(bussinesses.indexOf(process.group) > -1) {
             return process
         }
     })
