@@ -7,7 +7,7 @@ import FilterOfNodes from "scenes/nodes/components/FilterOfNodes";
 
 class NodesPage extends Component {
   state = {
-    check: [],
+    check: "",
     bussinessesChecks: []
   };
 
@@ -16,9 +16,7 @@ class NodesPage extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     if (value) {
-      this.setState(prevState => ({
-        check: name
-      }));
+      this.setState({check: name, bussinessesChecks: []});
     }
   };
 
