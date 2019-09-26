@@ -2,21 +2,21 @@ import React, { Component } from "react";
 import { Card, CardTitle, Badge, CustomInput } from "reactstrap";
 
 
-class Bussinesses extends Component {
+class Businesses extends Component {
   render() {
     const { node, checks, onInputChange } = this.props;
-    const bussinesses = node.processes.map(process=>(process.group))
+    const businesses = node.processes.map(process=>(process.group))
     return (
       <React.Fragment>
         <Card body>
-          {bussinesses.map(bussiness=>(
-            <CardTitle key={bussiness}>
+          {businesses.map(business=>(
+            <CardTitle key={business}>
               <CustomInput
               type="checkbox"
-              name={bussiness}
-              label={bussiness}
-              id={bussiness}
-              checked={checks.indexOf(bussiness) >= 0}
+              name={business}
+              label={business}
+              id={business}
+              checked={checks.indexOf(business) >= 0}
               onChange={onInputChange}
               inline
             />
@@ -28,4 +28,4 @@ class Bussinesses extends Component {
   }
 }
 
-export default Bussinesses;
+export default Businesses;

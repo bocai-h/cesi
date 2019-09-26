@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 
-import ProcessesWithBussinesses from "common/helpers/ProcessesWithBussinesses";
-import Bussinesses from "common/helpers/Bussinesses";
+import ProcessesWithBusinesses from "common/helpers/ProcessesWithBusinesses";
+import Businesses from "common/helpers/Businesses";
 import FilterOfNodes from "scenes/nodes/components/FilterOfNodes";
 
 class NodesPage extends Component {
@@ -57,7 +57,7 @@ class NodesPage extends Component {
             {nodes
               .filter(node => [check].indexOf(node.general.name) >= 0)
               .map(node => (
-                <Bussinesses
+                <Businesses
                   key={node.general.name}
                   node={node}
                   checks={bussinessesChecks}
@@ -69,7 +69,7 @@ class NodesPage extends Component {
             {nodes
               .filter(node => [check].indexOf(node.general.name) >= 0)
               .map(node => (
-                <ProcessesWithBussinesses
+                <ProcessesWithBusinesses
                   key={node.general.name}
                   node={node}
                   bussinesses={bussinessesChecks}

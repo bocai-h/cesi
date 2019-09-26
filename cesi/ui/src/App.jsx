@@ -195,6 +195,17 @@ class App extends Component {
                     />
                   )}
                 />
+                <Route
+                  path="/businesses"
+                  exact
+                  render={props => (
+                    <ServersPage
+                      {...props}
+                      nodes={this.state.nodes}
+                      refreshNodes={this.handleRefreshNodes}
+                    />
+                  )}
+                />
                 <Route path="/about" exact component={AboutPage} />
                 <Route
                   path="/profile/change_password"

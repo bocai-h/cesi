@@ -106,7 +106,7 @@ const Process = ({ node, process, refresh }) => {
   );
 };
 
-class ProcessesWithBussinesses extends React.Component {
+class ProcessesWithBusinesses extends React.Component {
   static propTypes = {
     node: PropTypes.object.isRequired,
     filterFunc: PropTypes.func
@@ -191,4 +191,4 @@ class ProcessesWithBussinesses extends React.Component {
   }
 }
 
-export default ProcessesWithBussinesses;
+export default ProcessesWithBusinesses;
