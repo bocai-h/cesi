@@ -73,38 +73,6 @@ class NodesPage extends Component {
                 refresh={refreshNodes}
             />   
           </Col>
-
-          {/* <Col sm={{ size: "auto" }}>
-            <FilterOfNodes
-              nodes={this.props.nodes}
-              checks={[check]}
-              onInputChange={this.handleInputChange}
-            />
-          </Col>
-          <Col sm={{ size: "auto" }}>
-            {nodes
-              .filter(node => [check].indexOf(node.general.name) >= 0)
-              .map(node => (
-                <Businesses
-                  key={node.general.name}
-                  node={node}
-                  checks={bussinessesChecks}
-                  onInputChange={this.handleBusinessesInputChange}
-                />
-              ))}
-          </Col>
-          <Col>
-            {nodes
-              .filter(node => [check].indexOf(node.general.name) >= 0)
-              .map(node => (
-                <ProcessesWithBusinesses
-                  key={node.general.name}
-                  node={node}
-                  bussinesses={bussinessesChecks}
-                  refresh={refreshNodes}
-                />
-              ))}
-          </Col> */}
         </Row>
       </Container>
     );
