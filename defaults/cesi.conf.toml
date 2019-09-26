@@ -30,7 +30,15 @@ username = "supervisor"
 password = "123"
 host = "192.168.56.100"
 port = "9001"
-bussinesses = [ "crm", "oa" ]
+
+
+[[nodes]]
+name = "002"
+environment = "华东机房"
+username = "supervisor"
+password = "123"
+host = "127.0.0.1"
+port = "9001"
 
 # [[nodes]]
 # name = "analysis-server"

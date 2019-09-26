@@ -8,14 +8,13 @@ from .handlers import xmlrpc_exceptions
 
 
 class Node:
-    def __init__(self, name, environment, host, port, username, password, bussinesses):
+    def __init__(self, name, environment, host, port, username, password):
         self.name = name
         self.environment = environment
         self.host = host
         self.port = port
         self.username = username
         self.password = password
-        self.bussinesses = bussinesses
         self.connection = XmlRpc.connection(
             self.host, self.port, self.username, self.password
         )
@@ -104,7 +103,6 @@ class Node:
             # "username": self.username,
             # "password": self.password,
             "connected": self.is_connected,
-            "bussinesses": self.bussinesses,
         }
 
     def serialize_processes(self):

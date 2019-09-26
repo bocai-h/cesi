@@ -7,7 +7,7 @@ from .node import Node
 
 CESI_CONF_SCHEMA = {
     "cesi": {"database", "activity_log", "admin_username", "admin_password"},
-    "nodes": {"name", "host", "port", "username", "password", "bussinesses", "environment"},
+    "nodes": {"name", "host", "port", "username", "password", "environment"},
 }
 
 
@@ -79,7 +79,6 @@ def parse_config_file(config_file_path):
             environment=node_environment,
             host=node["host"],
             port=node["port"],
-            bussinesses = node["bussinesses"],
             username=node["username"],
             password=node["password"],
         )
