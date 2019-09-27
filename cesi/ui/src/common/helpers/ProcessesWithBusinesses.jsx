@@ -73,7 +73,7 @@ class ProcessLog extends React.Component {
           <ModalHeader toggle={this.toggle}>
             Node: {node.general.name} | Process: {process.name}
           </ModalHeader>
-          <ModalBody>
+          <ModalBody style={{'max-height': 'calc(100vh - 210px)', 'overflow-y': 'auto'}}>
             {this.state.logs && (
               <React.Fragment>
                 <strong>Stdout</strong>
