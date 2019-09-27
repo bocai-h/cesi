@@ -16,13 +16,16 @@ import api from "services/api";
 class ProcessLog extends React.Component {
   state = {
     modal: false,
-    logs: null
+    logs: null,
   };
 
   toggle = () => {
     this.setState({
       modal: !this.state.modal
     });
+    if (this.interval > 0) {
+      clearInterval(this.interval)
+    }
   };
 
   showLogs = () => {
@@ -39,11 +42,31 @@ class ProcessLog extends React.Component {
       });
   };
 
+  getLogsInterval = () => {
+    const { node, process } = this.props;
+    const processUniqueName = `${process.group}:${process.name}`;
+    const getLog = (mthis) =>() => {
+      api.processes.process
+      .log(node.general.name, processUniqueName)
+      .then(data => {
+        console.log(data);
+        mthis.setState({
+          logs: data.logs
+        });
+        // this.toggle();
+      });
+    }
+    this.interval = setInterval(getLog(this), 3000);
+    this.setState({
+      modal: true
+    });
+  }
+
   render() {
     const { node, process } = this.props;
     return (
       <React.Fragment>
-        <Button color="info" onClick={this.showLogs}>
+        <Button color="info" onClick={this.getLogsInterval}>
           Log
         </Button>{" "}
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
