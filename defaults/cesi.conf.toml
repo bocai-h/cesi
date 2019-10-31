@@ -29,24 +29,24 @@ environment = "华北机房"
 username = "supervisor"
 password = "123"
 host = "192.168.56.100"
-port = "9001"
-
-
-[[nodes]]
-name = "002"
-environment = "华东机房"
-username = "supervisor"
-password = "123"
-host = "127.0.0.1"
-port = "9001"
-
-[[nodes]]
-name = "003"
-environment = "华南机房"
-username = "supervisor"
-password = "123"
-host = "127.0.0.1"
 port = "9002"
+
+
+# [[nodes]]
+# name = "002"
+# environment = "华东机房"
+# username = "supervisor"
+# password = "123"
+# host = "127.0.0.1"
+# port = "9001"
+
+# [[nodes]]
+# name = "003"
+# environment = "华南机房"
+# username = "supervisor"
+# password = "123"
+# host = "127.0.0.1"
+# port = "9002"
 # [[nodes]]
 # name = "analysis-server"
 # environment = ""

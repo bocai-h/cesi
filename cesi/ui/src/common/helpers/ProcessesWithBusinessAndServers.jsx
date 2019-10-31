@@ -10,7 +10,7 @@ import {
   ModalBody
 } from "reactstrap";
 import PropTypes from "prop-types";
-
+import Process from "common/helpers/Process"
 import api from "services/api";
 
 class ProcessLog extends React.Component {
@@ -94,41 +94,6 @@ class ProcessLog extends React.Component {
   }
 }
 
-const Process = ({ node, process, refresh }) => {
-  const handleProcess = action => {
-    const nodeName = node.general.name;
-    const processUniqueName = `${process.group}:${process.name}`;
-    api.processes.process[action](nodeName, processUniqueName).then(data => {
-      console.log(data);
-      refresh();
-    });
-  };
-
-  return (
-    <React.Fragment>
-      <tr key={process.name}>
-        <td>{process.name}</td>
-        <td>{process.group}</td>
-        <td>{node.general.name}</td>
-        <td>{process.pid}</td>
-        <td>{process.uptime}</td>
-        <td>{process.statename}</td>
-        <td>
-          <Button color="success" onClick={() => handleProcess("start")}>
-            Start
-          </Button>{" "}
-          <Button color="danger" onClick={() => handleProcess("stop")}>
-            Stop
-          </Button>{" "}
-          <Button color="warning" onClick={() => handleProcess("restart")}>
-            Restart
-          </Button>{" "}
-          <ProcessLog process={process} node={node} />
-        </td>
-      </tr>
-    </React.Fragment>
-  );
-};
 
 class ProcessesWithBusinessAndServers extends React.Component {
   static propTypes = {
