@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardTitle,
-  Badge,
-  Button,
-  Table
-} from "reactstrap";
+import {Card, CardTitle, Badge, Button, Spinner, Table} from "reactstrap";
 import Process from "common/helpers/Process"
 import PropTypes from "prop-types";
 
@@ -20,69 +14,83 @@ class Processes extends React.Component {
     filterFunc: () => true
   };
 
+  state = {
+    handling: false
+  };
+
+  finishedRefresh = () => {
+    this.setState({handling: false})
+  }
+
   handleAllProcess = action => {
     const nodeName = this.props.node.general.name;
-    api.nodes.allProcesses[action](nodeName).then(() => {
-      console.log("Updating nodes for single node action.");
-      this.props.refresh();
-    });
+    this.setState({handling: true})
+    api
+      .nodes
+      .allProcesses[action](nodeName)
+      .then(() => {
+        console.log("Updating nodes for single node action.");
+        this
+          .props
+          .refresh()
+          .then(data => {
+            this.finishedRefresh()
+          });;
+      });
   };
 
   render() {
-    const { node, filterFunc } = this.props;
+    const {node, filterFunc} = this.props;
+    const handling = this.state.handling;
     return (
       <React.Fragment>
         <Card body>
           <CardTitle>
             Processes for {node.general.name}{" "}
             <Badge color="secondary">{node.processes.length}</Badge>{" "}
-            <Button
-              color="success"
-              onClick={() => this.handleAllProcess("start")}
-            >
+            <Button color="success" onClick={() => this.handleAllProcess("start")}>
               Start All
             </Button>{" "}
-            <Button
-              color="danger"
-              onClick={() => this.handleAllProcess("stop")}
-            >
+            <Button color="danger" onClick={() => this.handleAllProcess("stop")}>
               Stop All
             </Button>{" "}
-            <Button
-              color="warning"
-              onClick={() => this.handleAllProcess("restart")}
-            >
+            <Button color="warning" onClick={() => this.handleAllProcess("restart")}>
               Restart All
             </Button>{" "}
           </CardTitle>
-          {node.processes.length !== 0 ? (
-            <Table hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Group</th>
-                  <th>Pid</th>
-                  <th>Uptime</th>
-                  <th>State</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {node.processes.filter(filterFunc).map(process => (
-                  <Process
-                    key={`${node.name}:${process.name}`}
-                    node={node}
-                    process={process}
-                    refresh={this.props.refresh}
-                  />
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <p>No processes configured.</p>
-          )}
+          {
+             handling ? <Spinner color="primary"  style={{ width: '3rem', height: '3rem' }} />:<div></div>
+          }
+          {node.processes.length !== 0 && !handling
+            ? (
+              <Table hover>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Group</th>
+                    <th>Pid</th>
+                    <th>Uptime</th>
+                    <th>State</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {node
+                    .processes
+                    .filter(filterFunc)
+                    .map(process => (<Process
+                      key={`${node.name}:${process.name}`}
+                      node={node}
+                      process={process}
+                      refresh={this.props.refresh}/>))}
+                </tbody>
+              </Table>
+            )
+            : (
+              <p>No processes configured.</p>
+            )}
         </Card>
-        <br />
+        <br/>
       </React.Fragment>
     );
   }
