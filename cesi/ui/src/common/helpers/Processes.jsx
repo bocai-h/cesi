@@ -4,10 +4,7 @@ import {
   CardTitle,
   Badge,
   Button,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody
+  Table
 } from "reactstrap";
 import Process from "common/helpers/Process"
 import PropTypes from "prop-types";
@@ -32,7 +29,7 @@ class Processes extends React.Component {
   };
 
   render() {
-    const { node, bussinesses, filterFunc } = this.props;
+    const { node, filterFunc } = this.props;
     return (
       <React.Fragment>
         <Card body>
