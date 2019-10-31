@@ -45,7 +45,7 @@ class App extends Component {
     this.setState({ groups });
   };
 
-  handleRefreshNodes = async () => {
+  handleRefreshNodes = async() => {
     const nodes = await api.nodes.get();
     this.setState({ nodes });
   };

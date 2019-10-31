@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardTitle, Badge, CustomInput } from "reactstrap";
+import { Card, CardTitle, CustomInput } from "reactstrap";
 
 
 class Businesses extends Component {
