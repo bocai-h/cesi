@@ -14,11 +14,11 @@ def get_user(username):
     return result
 
 
-def check_database():
+def check_database(cesi):
     try:
         ### Create Tables
         db.create_all()
         ### Add Admin User
-        admin_user = User.register(username="admin", password="admin", usertype=0)
+        admin_user = User.register(username=cesi.admin_username, password=cesi.admin_password, usertype=0)
     except Exception as e:
         print(e)

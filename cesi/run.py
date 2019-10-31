@@ -56,7 +56,7 @@ def configure(config_file_path):
 
     # Check database
     with app.app_context():
-        check_database()
+        check_database(cesi)
 
     signal.signal(signal.SIGHUP, lambda signum, frame: cesi.reload())
 
