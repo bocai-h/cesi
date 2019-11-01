@@ -10,7 +10,7 @@ import {
   Button,
   Row
 } from "reactstrap";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import FormMessage from "common/helpers/FormMessage";
 import api from "services/api";
@@ -25,64 +25,56 @@ class ChangePassword extends React.Component {
   };
 
   handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
+    const {name, value} = event.target;
+    this.setState({[name]: value});
   };
+
+  cancelChangePassword = () => {
+    // Redirect home page
+    this
+      .props
+      .history
+      .push("/");
+  }
 
   handleChangePassword = e => {
     e.preventDefault();
-    const { oldPassword, newPassword, confirmPassword } = this.state;
+    const {oldPassword, newPassword, confirmPassword} = this.state;
     if (!oldPassword) {
-      this.setState({
-        formStatus: "danger",
-        formMessage: "Please enter valid value old password"
-      });
+      this.setState({formStatus: "danger", formMessage: "Please enter valid value old password"});
       return;
     }
     if (newPassword !== confirmPassword) {
-      this.setState({
-        formStatus: "danger",
-        formMessage: "New Password and Confirm Password didn't match"
-      });
+      this.setState({formStatus: "danger", formMessage: "New Password and Confirm Password didn't match"});
       return;
     }
-    api.profile
+    api
+      .profile
       .changePassword(oldPassword, newPassword)
       .then(json => {
-        this.setState({
-          formStatus: "success",
-          formMessage: "Success! Your Password has been changed!"
-        });
+        this.setState({formStatus: "success", formMessage: "Success! Your Password has been changed!"});
         setTimeout(() => {
           // Redirect home page
-          this.props.history.push("/");
+          this
+            .props
+            .history
+            .push("/");
         }, 1000);
       })
       .catch(error => {
         console.log(error);
-        this.setState({
-          formStatus: "danger",
-          formMessage: error.message
-        });
+        this.setState({formStatus: "danger", formMessage: error.message});
       });
   };
   render() {
-    const {
-      oldPassword,
-      newPassword,
-      confirmPassword,
-      formMessage,
-      formStatus
-    } = this.state;
+    const {oldPassword, newPassword, confirmPassword, formMessage, formStatus} = this.state;
     return (
       <Container className="App">
         <Row>
           <Col>
             <h2>Change Password</h2>
             <Form onSubmit={this.handleChangePassword}>
-              <FormMessage message={formMessage} status={formStatus} />
+              <FormMessage message={formMessage} status={formStatus}/>
               <FormGroup>
                 <Label>Old Password</Label>
                 <Input
@@ -90,8 +82,7 @@ class ChangePassword extends React.Component {
                   name="oldPassword"
                   placeholder="******"
                   value={oldPassword}
-                  onChange={this.handleInputChange}
-                />
+                  onChange={this.handleInputChange}/>
               </FormGroup>
               <FormGroup>
                 <Label>New Password</Label>
@@ -100,8 +91,7 @@ class ChangePassword extends React.Component {
                   name="newPassword"
                   placeholder="******"
                   value={newPassword}
-                  onChange={this.handleInputChange}
-                />
+                  onChange={this.handleInputChange}/>
               </FormGroup>
               <FormGroup>
                 <Label>Confirm Password</Label>
@@ -110,11 +100,10 @@ class ChangePassword extends React.Component {
                   name="confirmPassword"
                   placeholder="******"
                   value={confirmPassword}
-                  onChange={this.handleInputChange}
-                />
+                  onChange={this.handleInputChange}/>
               </FormGroup>
               <Button color="primary">Change</Button>{" "}
-              <Button color="secondary" onClick={this.toggle}>
+              <Button color="secondary" onClick={this.cancelChangePassword}>
                 Cancel
               </Button>
             </Form>
