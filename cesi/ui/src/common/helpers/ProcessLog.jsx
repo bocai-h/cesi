@@ -5,6 +5,7 @@ import {
   ModalHeader,
   ModalBody,
   ButtonDropdown,
+  Spinner,
   DropdownItem,
   DropdownMenu,
   DropdownToggle
@@ -16,8 +17,13 @@ class ProcessLog extends React.Component {
   state = {
     modal: false,
     dropdownOpen: false,
+    handling: false,
     logs: null
   };
+
+  finishedRefresh = () => {
+    this.setState({handling: false})
+  }
 
   toggle = () => {
     this.setState({
@@ -48,6 +54,7 @@ class ProcessLog extends React.Component {
   // this.toggle();       });   }   this.interval = setInterval(getLog(this),
   // 3000);   this.setState({modal: true}); } 获取标准输出日志
   getStdoutLogsInterval = () => {
+    this.setState({handling: true})
     const {node, process} = this.props;
     const processUniqueName = `${process.group}:${process.name}`;
     const getLog = (mthis) => () => {
@@ -58,7 +65,7 @@ class ProcessLog extends React.Component {
         .then(data => {
           console.log(data);
           mthis.setState({logs: data.logs});
-          // this.toggle();
+          this.finishedRefresh()
         });
     }
     this.stdoutLogInterval = setInterval(getLog(this), 3000);
@@ -67,6 +74,7 @@ class ProcessLog extends React.Component {
 
   // 获取错误日志
   getStderrLogsInterval = () => {
+    this.setState({handling: true})
     const {node, process} = this.props;
     const processUniqueName = `${process.group}:${process.name}`;
     const getLog = (mthis) => () => {
@@ -77,7 +85,7 @@ class ProcessLog extends React.Component {
         .then(data => {
           console.log(data);
           mthis.setState({logs: data.logs});
-          // this.toggle();
+          this.finishedRefresh();
         });
     }
     this.stderrInterval = setInterval(getLog(this), 3000);
@@ -86,6 +94,7 @@ class ProcessLog extends React.Component {
 
   render() {
     const {node, process} = this.props;
+    const handling = this.state.handling;
     const dropdownOpen = this.state.dropdownOpen
     return (
       <React.Fragment>
@@ -102,27 +111,24 @@ class ProcessLog extends React.Component {
             <DropdownItem onClick={this.getStderrLogsInterval}>StdErr</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} size="lg">
           <ModalHeader toggle={this.toggle}>
             Node: {node.general.name}
             | Process: {process.name}
           </ModalHeader>
-          <ModalBody
-            style={{
-            'maxHeight': 'calc(100vh - 210px)',
-            'overflowY': 'auto'
-          }}>
-            {this.state.logs && (
+          <ModalBody>
+            {
               <React.Fragment>
-                {this
-                  .state
-                  .logs
-                  .data
-                  .map(log => (
+                {
+                  handling ? <div style={{marginLeft:"50%",marginRight:"50%"}}><Spinner color="primary"  style={{ width: '3rem', height: '3rem' }} /></div>:<div style={{display: "none"}}></div>
+                }
+                {
+                  this.state.logs ?
+                  this.state.logs.data.map(log => (
                     <p key={log}>{log}</p>
-                  ))}
+                  )): ""}
               </React.Fragment>
-            )}
+            }
           </ModalBody>
         </Modal>
       </React.Fragment>
