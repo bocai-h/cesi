@@ -60,7 +60,7 @@ class NodesPage extends Component {
           <Col sm={{ size: "auto" }}>
             <BusinessNodes
                business = {bussinessesCheck}
-               nodes={this.props.nodes}
+               nodes={nodes}
                checks={serversChecks}
                onInputChange={this.handleServersInputChange}
             />

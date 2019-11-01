@@ -64,19 +64,29 @@ class Process extends React.Component {
   }
 
   render() {
-    const {node, process, groupColumn} = this.props;
+    const {node, process, groupColumn, serverColumn} = this.props;
+    console.log(node)
     const handling = this.state.handling;
     return (
       <React.Fragment>
         <tr key={process.name}>
           <td>{process.name}</td>
-          {
-            groupColumn
+          {serverColumn
+            ? <td>
+                {node.general.name}
+              </td>
+            : <td style={{
+              "display": "none"
+            }}></td>
+}
+          {groupColumn
             ? <td>
                 {process.group}
               </td>
-            : <td style={{"display": "none"}}></td>
-          }
+            : <td style={{
+              "display": "none"
+            }}></td>
+}
           <td>{process.pid}</td>
           <td>{process.uptime}</td>
           <td>

@@ -13,7 +13,7 @@ import api from "services/api";
 
 class ProcessesWithBusinessAndServers extends React.Component {
   static propTypes = {
-    node: PropTypes.object.isRequired,
+    nodes: PropTypes.array.isRequired,
     filterFunc: PropTypes.func
   };
   static defaultProps = {
@@ -67,7 +67,7 @@ class ProcessesWithBusinessAndServers extends React.Component {
   };
 
   render() {
-    const {nodes, bussinessCheck, nodesChecks, filterFunc} = this.props;
+    const {nodes, bussinessCheck, nodesChecks, groupColumn, filterFunc} = this.props;
     const handling = this.state.handling;
     const showProcesses = this.getShowProcesses(nodes, bussinessCheck, nodesChecks)
     return (
@@ -100,7 +100,9 @@ class ProcessesWithBusinessAndServers extends React.Component {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Group</th>
+                    {
+                      groupColumn ? <th>Group</th> : (<th style={{"display": "none"}} ></th>)
+                    }
                     <th>Server</th>
                     <th>Pid</th>
                     <th>Uptime</th>
@@ -114,6 +116,8 @@ class ProcessesWithBusinessAndServers extends React.Component {
                     .map(processItem => (processItem["processes"].map(process => (<Process
                       key={`${processItem["node"].general.name}:${process.name}`}
                       node={processItem["node"]}
+                      groupColumn={false}
+                      serverColumn={true}
                       process={process}
                       refresh={this.props.refresh}/>))))}
                 </tbody>
