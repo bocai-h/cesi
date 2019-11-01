@@ -146,27 +146,32 @@ def restart_process(node_name, unique_process_name):
     return jsonify(status="error", message=msg), 500
 
 
-@nodes.route("/<node_name>/processes/<unique_process_name>/log/")
+@nodes.route("/<node_name>/processes/<unique_process_name>/log/<log_type>")
 @is_user_logged_in(
-    "Illegal request for read log to {node_name} node's {unique_process_name} process."
+    "Illegal request for read {log_type} log to {node_name} node's {unique_process_name} process."
 )
-def read_process_log(node_name, unique_process_name):
+def read_process_log(node_name, unique_process_name, log_type):
     if g.user.usertype in [0, 1, 2]:
         node = cesi.get_node_or_400(node_name)
         if not node.is_connected:
             return jsonify(status="error", message="Node is not connected"), 400
-
-        logs = node.get_process_logs(unique_process_name)
+        
+        # logs = node.get_process_logs(unique_process_name)
+        if log_type == "stdout":
+           logs = node.get_process_stdout_logs(unique_process_name)
+        else:
+           logs = node.get_process_stderr_logs(unique_process_name)
+       
         activity.logger.info(
-            "{} read log {} node's {} process.".format(
-                g.user.username, node_name, unique_process_name
+            "{} read {} log {} node's {} process.".format(
+                g.user.username, log_type, node_name, unique_process_name
             )
         )
         return jsonify(status="success", logs=logs)
 
     activity.logger.info(
-        "{} is unauthorized user request for read log. Read log event fail for {} node's {} process.".format(
-            g.user.username, node_name, unique_process_name
+        "{} is unauthorized user request for read {} log. Read log event fail for {} node's {} process.".format(
+            g.user.username, log_type, node_name, unique_process_name
         )
     )
     return (

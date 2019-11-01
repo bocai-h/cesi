@@ -148,6 +148,16 @@ const processes = {
       return getRequest(
         `${API_PREFIX}/nodes/${nodeName}/processes/${processUniqueName}/log/`
       );
+    },
+    stdoutlog: (nodeName, processUniqueName) => {
+      return getRequest(
+        `${API_PREFIX}/nodes/${nodeName}/processes/${processUniqueName}/log/stdout`
+      );
+    },
+    stderrlog: (nodeName, processUniqueName) => {
+      return getRequest(
+        `${API_PREFIX}/nodes/${nodeName}/processes/${processUniqueName}/log/stderr`
+      );
     }
   }
 };

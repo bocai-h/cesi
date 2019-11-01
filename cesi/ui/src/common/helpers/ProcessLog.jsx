@@ -21,44 +21,66 @@ class ProcessLog extends React.Component {
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      logs: null
     });
-    if (this.interval > 0) {
-      clearInterval(this.interval)
+    if (this.stdoutLogInterval > 0) {
+      clearInterval(this.stdoutLogInterval)
+    }
+    if (this.stderrInterval > 0) {
+      clearInterval(this.stderrInterval)
     }
   };
 
-  buttonToggle = () => this.setState({"dropdownOpen": !this.state.dropdownOpen});
+  buttonToggle = () => this.setState({
+    "dropdownOpen": !this.state.dropdownOpen
+  });
 
-  showLogs = () => {
-    const {node, process} = this.props;
-    const processUniqueName = `${process.group}:${process.name}`;
-    api
-      .processes
-      .process
-      .log(node.general.name, processUniqueName)
-      .then(data => {
-        console.log(data);
-        this.setState({logs: data.logs});
-        this.toggle();
-      });
-  };
-
-  getLogsInterval = () => {
+  // showLogs = () => {   const {node, process} = this.props;   const
+  // processUniqueName = `${process.group}:${process.name}`;   api     .processes
+  //    .process     .log(node.general.name, processUniqueName)     .then(data =>
+  // {       console.log(data);       this.setState({logs: data.logs});
+  // this.toggle();     }); }; getLogsInterval = () => {   const {node, process} =
+  // this.props;   const processUniqueName = `${process.group}:${process.name}`;
+  // const getLog = (mthis) => () => {     api       .processes       .process
+  //   .log(node.general.name, processUniqueName)       .then(data => {
+  // console.log(data);         mthis.setState({logs: data.logs});         //
+  // this.toggle();       });   }   this.interval = setInterval(getLog(this),
+  // 3000);   this.setState({modal: true}); } 获取标准输出日志
+  getStdoutLogsInterval = () => {
     const {node, process} = this.props;
     const processUniqueName = `${process.group}:${process.name}`;
     const getLog = (mthis) => () => {
       api
         .processes
         .process
-        .log(node.general.name, processUniqueName)
+        .stdoutlog(node.general.name, processUniqueName)
         .then(data => {
           console.log(data);
           mthis.setState({logs: data.logs});
           // this.toggle();
         });
     }
-    this.interval = setInterval(getLog(this), 3000);
+    this.stdoutLogInterval = setInterval(getLog(this), 3000);
+    this.setState({modal: true});
+  }
+
+  // 获取错误日志
+  getStderrLogsInterval = () => {
+    const {node, process} = this.props;
+    const processUniqueName = `${process.group}:${process.name}`;
+    const getLog = (mthis) => () => {
+      api
+        .processes
+        .process
+        .stderrlog(node.general.name, processUniqueName)
+        .then(data => {
+          console.log(data);
+          mthis.setState({logs: data.logs});
+          // this.toggle();
+        });
+    }
+    this.stderrInterval = setInterval(getLog(this), 3000);
     this.setState({modal: true});
   }
 
@@ -75,9 +97,9 @@ class ProcessLog extends React.Component {
             Log
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={this.getLogsInterval}>StdOut</DropdownItem>
+            <DropdownItem onClick={this.getStdoutLogsInterval}>StdOut</DropdownItem>
             <DropdownItem divider/>
-            <DropdownItem>StdErr</DropdownItem>
+            <DropdownItem onClick={this.getStderrLogsInterval}>StdErr</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -87,25 +109,15 @@ class ProcessLog extends React.Component {
           </ModalHeader>
           <ModalBody
             style={{
-            'max-height': 'calc(100vh - 210px)',
-            'overflow-y': 'auto'
+            'maxHeight': 'calc(100vh - 210px)',
+            'overflowY': 'auto'
           }}>
             {this.state.logs && (
               <React.Fragment>
-                <strong>Stdout</strong>
                 {this
                   .state
                   .logs
-                  .stdout
-                  .map(log => (
-                    <p key={log}>{log}</p>
-                  ))}
-                <br/>
-                <strong>Stderr</strong>
-                {this
-                  .state
-                  .logs
-                  .stderr
+                  .data
                   .map(log => (
                     <p key={log}>{log}</p>
                   ))}

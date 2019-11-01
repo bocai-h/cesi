@@ -68,6 +68,24 @@ class Node:
         }
         return logs
 
+    def get_process_stdout_logs(self, unique_name):
+        stdout_log_string = self.connection.supervisor.tailProcessStdoutLog(
+            unique_name, 0, 3000
+        )[0]
+        logs = {
+            "data": stdout_log_string.split("\n")[1:-1]
+        }
+        return logs
+
+    def get_process_stderr_logs(self, unique_name):
+        stderr_log_string = self.connection.supervisor.tailProcessStderrLog(
+            unique_name, 0, 3000
+        )[0]
+        logs = {
+            "data": stderr_log_string.split("\n")[1:-1]
+        }
+        return logs
+
     def get_processes_by_group_name(self, group_name):
         return [p for p in self.processes if p.group == group_name]
 
