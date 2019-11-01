@@ -8,7 +8,9 @@ import {
   Spinner,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle
+  DropdownToggle,
+  ListGroup,
+  ListGroupItem
 } from "reactstrap";
 
 import api from "services/api";
@@ -124,9 +126,13 @@ class ProcessLog extends React.Component {
                 }
                 {
                   this.state.logs ?
-                  this.state.logs.data.map(log => (
-                    <p key={log}>{log}</p>
-                  )): ""}
+                  <ListGroup>
+                    { this.state.logs.data.map(log => (
+                    // <p key={log}>{log}</p>
+                    <ListGroupItem key={log}>{log}</ListGroupItem>
+                    ))}
+                  </ListGroup>
+                 : ""}
               </React.Fragment>
             }
           </ModalBody>
