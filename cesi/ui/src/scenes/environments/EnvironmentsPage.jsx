@@ -62,6 +62,7 @@ class EnvironmentsPage extends Component {
                       <Processes
                         key={member.general.name}
                         node={member}
+                        groupColumn={true}
                         refresh={refreshEnvironments}
                       />
                     ))}

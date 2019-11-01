@@ -35,12 +35,12 @@ class Processes extends React.Component {
           .refresh()
           .then(data => {
             this.finishedRefresh()
-          });;
+          });
       });
   };
 
   render() {
-    const {node, filterFunc} = this.props;
+    const {node, filterFunc, groupColumn} = this.props;
     const handling = this.state.handling;
     return (
       <React.Fragment>
@@ -67,7 +67,9 @@ class Processes extends React.Component {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Group</th>
+                    {
+                      groupColumn ? <th>Group</th> : <th style={{"display": "none"}} ></th>
+                    }
                     <th>Pid</th>
                     <th>Uptime</th>
                     <th>State</th>
@@ -82,6 +84,7 @@ class Processes extends React.Component {
                       key={`${node.name}:${process.name}`}
                       node={node}
                       process={process}
+                      groupColumn = {true}
                       refresh={this.props.refresh}/>))}
                 </tbody>
               </Table>

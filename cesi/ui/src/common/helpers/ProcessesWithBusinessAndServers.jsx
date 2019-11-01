@@ -4,10 +4,8 @@ import {
   CardTitle,
   Badge,
   Button,
-  Table,
-  Modal,
-  ModalHeader,
-  ModalBody
+  Spinner,
+  Table
 } from "reactstrap";
 import PropTypes from "prop-types";
 import Process from "common/helpers/Process"
@@ -22,7 +20,16 @@ class ProcessesWithBusinessAndServers extends React.Component {
     filterFunc: () => true
   };
 
+  state = {
+    handling: false
+  };
+
+  finishedRefresh = () => {
+    this.setState({handling: false})
+  }
+
   handleAllProcess = (action, processes) => {
+    this.setState({handling: true})
     processes.map(process => {
       var nodeName = process["node"].general.name
       var processNames = process["processes"].map(process => (process.name))
@@ -33,7 +40,9 @@ class ProcessesWithBusinessAndServers extends React.Component {
           console.log("Updating nodes for single node action.");
           this
             .props
-            .refresh();
+            .refresh().then(data => {
+              this.finishedRefresh()
+            });
         });
     })
   };
@@ -59,6 +68,7 @@ class ProcessesWithBusinessAndServers extends React.Component {
 
   render() {
     const {nodes, bussinessCheck, nodesChecks, filterFunc} = this.props;
+    const handling = this.state.handling;
     const showProcesses = this.getShowProcesses(nodes, bussinessCheck, nodesChecks)
     return (
       <React.Fragment>
@@ -81,7 +91,10 @@ class ProcessesWithBusinessAndServers extends React.Component {
               Restart All
             </Button>{" "}
           </CardTitle>
-          {showProcesses.length !== 0
+          {
+             handling ? <Spinner color="primary"  style={{ width: '3rem', height: '3rem' }} />:<div></div>
+          }
+          {showProcesses.length !== 0 && !handling
             ? (
               <Table hover>
                 <thead>

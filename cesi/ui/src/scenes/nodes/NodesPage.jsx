@@ -49,6 +49,7 @@ class NodesPage extends Component {
                 <Processes
                   key={node.general.name}
                   node={node}
+                  groupColumn={true}
                   refresh={refreshNodes}
                 />
               ))}
